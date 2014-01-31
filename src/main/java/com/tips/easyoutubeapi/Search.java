@@ -25,8 +25,10 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.google.api.services.youtube.model.VideoStatistics;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,8 +50,9 @@ public class Search {
      * contains the developer's API key.
      */
     private static final String PROPERTIES_FILENAME = "youtube.properties";
+    private static final String PROPERTIES_PATH = "./properties/";
 
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 25;
+    private static final long NUMBER_OF_VIDEOS_RETURNED = 2;
 
     /**
      * Define a global instance of a Youtube object, which will be used
@@ -65,9 +68,10 @@ public class Search {
      */
     public static void main(String[] args) {
         // Read the developer key from the properties file.
+    	
         Properties properties = new Properties();
         try {
-            InputStream in = Search.class.getResourceAsStream("/" + PROPERTIES_FILENAME);
+        	FileInputStream in = new FileInputStream(PROPERTIES_PATH + PROPERTIES_FILENAME);
             properties.load(in);
 
         } catch (IOException e) {
@@ -81,6 +85,7 @@ public class Search {
             // argument is required, but since we don't need anything
             // initialized when the HttpRequest is initialized, we override
             // the interface and provide a no-op function.
+        	//TODO
             youtube = new YouTube.Builder(Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY, new HttpRequestInitializer() {
                 public void initialize(HttpRequest request) throws IOException {
                 }
@@ -96,6 +101,7 @@ public class Search {
             // non-authenticated requests. See:
             // {{ https://cloud.google.com/console }}
             String apiKey = properties.getProperty("youtube.apikey");
+            //String apiKey = "AIzaSyCoaNth4gZXiEz-bzVJaUkwnZguwwiisLg";
             search.setKey(apiKey);
             search.setQ(queryTerm);
 
@@ -105,7 +111,7 @@ public class Search {
 
             // To increase efficiency, only retrieve the fields that the
             // application uses.
-            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/description,snippet/publishedAt,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
 
             // Call the API and print results.
@@ -165,15 +171,22 @@ public class Search {
 
             SearchResult singleVideo = iteratorSearchResults.next();
             ResourceId rId = singleVideo.getId();
+            
 
             // Confirm that the result represents a video. Otherwise, the
             // item will not contain a video ID.
             if (rId.getKind().equals("youtube#video")) {
                 Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().getDefault();
 
-                System.out.println(" Video Id" + rId.getVideoId());
+                System.out.println(" Video Id: " + rId.getVideoId());
+                
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
+                System.out.println("Description: " + singleVideo.getSnippet().getDescription());
+                System.out.println("Published At: "+ singleVideo.getSnippet().getPublishedAt());
+                
                 System.out.println(" Thumbnail: " + thumbnail.getUrl());
+                
+//                System.out.println("The number of times the video has been viewed: " + statistics.getViewCount());
                 System.out.println("\n-------------------------------------------------------------\n");
             }
         }
