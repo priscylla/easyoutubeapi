@@ -21,11 +21,15 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.ContentRating;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoListResponse;
 import com.google.api.services.youtube.model.VideoStatistics;
+import com.google.api.services.youtube.model.VideoSuggestionsTagSuggestion;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -35,6 +39,8 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
+import org.mortbay.servlet.ConcatServlet;
 
 import com.tips.easyoutubeapi.Auth;
 
@@ -53,6 +59,7 @@ public class Search {
     private static final String PROPERTIES_PATH = "./properties/";
 
     private static final long NUMBER_OF_VIDEOS_RETURNED = 2;
+    private static String apiKey;
 
     /**
      * Define a global instance of a Youtube object, which will be used
@@ -96,11 +103,12 @@ public class Search {
 
             // Define the API request for retrieving search results.
             YouTube.Search.List search = youtube.search().list("id,snippet");
+            
 
             // Set your developer key from the {{ Google Cloud Console }} for
             // non-authenticated requests. See:
             // {{ https://cloud.google.com/console }}
-            String apiKey = properties.getProperty("youtube.apikey");
+            apiKey = properties.getProperty("youtube.apikey");
             //String apiKey = "AIzaSyCoaNth4gZXiEz-bzVJaUkwnZguwwiisLg";
             search.setKey(apiKey);
             search.setQ(queryTerm);
@@ -111,12 +119,13 @@ public class Search {
 
             // To increase efficiency, only retrieve the fields that the
             // application uses.
-            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/description,snippet/publishedAt,snippet/thumbnails/default/url)");
+            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/description,snippet/channelTitle,snippet/channelId,snippet/publishedAt,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
 
             // Call the API and print results.
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
+            
             if (searchResultList != null) {
                 prettyPrint(searchResultList.iterator(), queryTerm);
             }
@@ -180,13 +189,43 @@ public class Search {
 
                 System.out.println(" Video Id: " + rId.getVideoId());
                 
+                
                 System.out.println(" Title: " + singleVideo.getSnippet().getTitle());
                 System.out.println("Description: " + singleVideo.getSnippet().getDescription());
                 System.out.println("Published At: "+ singleVideo.getSnippet().getPublishedAt());
-                
+                System.out.println("Channel Id/Owner: "+ singleVideo.getSnippet().getChannelId());
                 System.out.println(" Thumbnail: " + thumbnail.getUrl());
+                System.out.println("Channel Title: "+singleVideo.getSnippet().getChannelTitle());
                 
-//                System.out.println("The number of times the video has been viewed: " + statistics.getViewCount());
+                /////////
+                //TODO
+				try {
+					com.google.api.services.youtube.YouTube.Videos.List teste;
+					teste = youtube.videos().list("snippet,statistics,contentDetails");
+					teste.setId(rId.getVideoId());
+	                teste.setKey(apiKey);
+	                teste.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
+	                VideoListResponse search_teste = teste.execute();
+	                List<Video> searchResult_teste = search_teste.getItems();
+	                Video video_teste = searchResult_teste.get(0);
+	                System.out.println("Duration: "+ video_teste.getContentDetails().getDuration());
+	                System.out.println("Caption : "+ video_teste.getContentDetails().getCaption());
+	                ContentRating contentRating = video_teste.getContentDetails().getContentRating();
+	                System.out.println("View Count = "+ video_teste.getStatistics().getViewCount());
+	                System.out.println("Like Count = "+ video_teste.getStatistics().getLikeCount());
+	                System.out.println("Dislike Count = "+ video_teste.getStatistics().getDislikeCount());
+	                System.out.println("Favorite Count = "+ video_teste.getStatistics().getFavoriteCount());
+	                System.out.println("Comment Count = "+ video_teste.getStatistics().getCommentCount());
+//	                List<VideoSuggestionsTagSuggestion> tags = video_teste.getSuggestions().getTagSuggestions();
+//	                System.out.println("Tag Suggestions = " + tags.get(0).getTag());
+	                
+	                
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                ////////
+				
                 System.out.println("\n-------------------------------------------------------------\n");
             }
         }
