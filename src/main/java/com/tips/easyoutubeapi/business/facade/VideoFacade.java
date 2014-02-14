@@ -2,13 +2,13 @@ package com.tips.easyoutubeapi.business.facade;
 
 import java.util.List;
 
-import com.tips.easyoutubeapi.dto.VideoDTO;
+import com.tips.easyoutubeapi.dto.SimpleVideoDTO;
 
 public interface VideoFacade {
 
-	public List<VideoDTO> findVideo(List<String> keywords);
+	public List<SimpleVideoDTO> findVideos(List<String> keywords);
 	
-	public VideoDTO findVideo(String videoId);
+	public SimpleVideoDTO findVideo(String videoId);
 	
 	public String getCaption(String videoId);
 	
