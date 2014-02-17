@@ -1,12 +1,14 @@
 package com.tips.easyoutubeapi.business.facade.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.api.client.util.DateTime;
 import com.tips.easyoutubeapi.business.facade.VideoFacade;
 import com.tips.easyoutubeapi.business.service.VideoService;
 import com.tips.easyoutubeapi.dto.SimpleVideoDTO;
@@ -30,9 +32,7 @@ public class VideoFacadeImpl implements VideoFacade {
 		List<SimpleVideoDTO> simpleVideoDTOList = new ArrayList<SimpleVideoDTO>();
 		
 		for (SimpleVideo simpleVideo : simpleVideoList) {
-			SimpleVideoDTO simpleVideoDTO = new SimpleVideoDTO();
-			simpleVideoDTO.setTitle(simpleVideo.getTitle());
-			simpleVideoDTOList.add(simpleVideoDTO);
+			
 		}
 		
 		return simpleVideoDTOList;
@@ -46,6 +46,26 @@ public class VideoFacadeImpl implements VideoFacade {
 	public String getCaption(String videoId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private SimpleVideoDTO simpleVideoToSimpleVideoDTO(SimpleVideo simpleVideo){
+		SimpleVideoDTO simpleVideoDTO = new SimpleVideoDTO();
+		
+		simpleVideoDTO.setTitle(simpleVideo.getTitle());
+		simpleVideoDTO.setDescription(simpleVideo.getDescription());
+		simpleVideoDTO.setChannelId(simpleVideo.getChannelId());
+		simpleVideoDTO.setChannelTitle(simpleVideo.getChannelTitle());
+		simpleVideoDTO.setDuration(simpleVideo.getDuration());
+		simpleVideoDTO.setCaption(caption);
+		simpleVideoDTO.setPublishedAt(DateTimeToDate(simpleVideo.getPublishedAt()));
+		simpleVideoDTO.setStatistics(simpleVideo.getStatistics());
+		simpleVideoDTO.setThumbnail(simpleVideo.getThumbnail());
+		
+		return simpleVideoDTO;
+	}
+
+	private Date DateTimeToDate(DateTime originalTime) {
+		return new java.util.Date(originalTime.getValue());
 	}
 
 }
