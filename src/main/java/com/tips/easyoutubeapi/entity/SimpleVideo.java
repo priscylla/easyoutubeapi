@@ -18,9 +18,12 @@ public class SimpleVideo {
 	public SimpleVideo() {
 	}
 
-	public SimpleVideo(String title, String description, DateTime publishedAt,
-			String channelId, String thumbnail, String channelTitle,
-			String duration, Statistics statistics, Caption caption) {
+	public SimpleVideo(String id, String title, String description,
+			DateTime publishedAt, String channelId, String thumbnail,
+			String channelTitle, String duration, Statistics statistics,
+			Caption caption) {
+		super();
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.publishedAt = publishedAt;

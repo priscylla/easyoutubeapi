@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchResult;
+import com.google.api.services.youtube.model.SearchResultSnippet;
+import com.google.api.services.youtube.model.Thumbnail;
 import com.tips.easyoutubeapi.entity.SimpleVideo;
 import com.tips.easyoutubeapi.repository.VideoRepository;
 
@@ -27,12 +29,18 @@ public class VideoRepositoryImpl extends AbstractYoutube implements VideoReposit
 		for (SearchResult searchResult : searchResultList) {
 			
         	ResourceId resourceId = searchResult.getId();
+        	SearchResultSnippet snippet = searchResult.getSnippet();
+        	Thumbnail thumbnail = snippet.getThumbnails().getDefault();
         	
         	if (isResourceOfTypeYouTubeVideo(resourceId)) {
         		SimpleVideo simpleVideo = new SimpleVideo();
-        		
-        		simpleVideo.setId("");
-        		
+        		simpleVideo.setId(resourceId.getVideoId());
+        		simpleVideo.setTitle(snippet.getTitle());
+        		simpleVideo.setDescription(snippet.getDescription());
+        		simpleVideo.setPublishedAt(snippet.getPublishedAt());
+        		simpleVideo.setChannelId(snippet.getChannelId());
+        		simpleVideo.setChannelTitle(snippet.getChannelTitle());
+        		simpleVideo.setThumbnail(thumbnail.getUrl());
 				simpleVideoListToReturn.add(simpleVideo);
         	}
 		}

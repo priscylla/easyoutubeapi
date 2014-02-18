@@ -48,6 +48,16 @@ public class VideoRepositoryImplTest {
 		assertFalse("The SipmleVideoList don't be empty.", simpleVideoList.isEmpty());
 		assertEquals("The SipmleVideoList should have the same quantity of elements.", quantity, new Long(simpleVideoList.size()));
 	}
+	
+	@Test
+	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeIdNotNullOfObjects() throws Exception {
+		List<SimpleVideo> simpleVideoList = findVideos();
+		
+		for (SimpleVideo simpleVideo : simpleVideoList) {
+			assertNotNull("The attribute id not should be null.", simpleVideo.getId());
+		}
+		
+	}
 
 	@Test
 	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeCaptionNotNullOfObjects() throws Exception {
