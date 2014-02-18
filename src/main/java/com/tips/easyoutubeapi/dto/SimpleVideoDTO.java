@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class SimpleVideoDTO {
 
+	private String id;
 	private String title;
 	private String description;
 	private Date publishedAt;
@@ -15,6 +16,22 @@ public class SimpleVideoDTO {
 	private CaptionDTO caption;
 	
 	public SimpleVideoDTO() {}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
 
 	/**
 	 * @return the title
