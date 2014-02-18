@@ -6,6 +6,6 @@ import com.tips.easyoutubeapi.entity.SimpleVideo;
 
 public interface VideoService {
 
-	List<SimpleVideo> findVideos(List<String> same);
+	List<SimpleVideo> findVideos(List<String> keywords, long quantity);
 
 }

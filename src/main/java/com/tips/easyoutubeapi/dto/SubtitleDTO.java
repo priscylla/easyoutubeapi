@@ -1,6 +1,5 @@
 package com.tips.easyoutubeapi.dto;
 
-import com.tips.easyoutubeapi.entity.Languages;
 
 public class SubtitleDTO {
 	

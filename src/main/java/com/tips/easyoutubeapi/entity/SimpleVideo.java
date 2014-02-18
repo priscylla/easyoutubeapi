@@ -1,7 +1,5 @@
 package com.tips.easyoutubeapi.entity;
 
-import java.util.Date;
-
 import com.google.api.client.util.DateTime;
 
 public class SimpleVideo {

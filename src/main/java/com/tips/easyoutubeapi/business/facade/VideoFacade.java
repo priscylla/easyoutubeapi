@@ -6,7 +6,7 @@ import com.tips.easyoutubeapi.dto.SimpleVideoDTO;
 
 public interface VideoFacade {
 
-	public List<SimpleVideoDTO> findVideos(List<String> keywords);
+	public List<SimpleVideoDTO> findVideos(List<String> keywords, long quantity);
 	
 	public SimpleVideoDTO findVideo(String videoId);
 	
