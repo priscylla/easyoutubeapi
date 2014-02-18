@@ -36,13 +36,14 @@ public class VideoFacadeImplTest {
 		
 		final List<String> keywords = new ArrayList<String>();
 		final List<SimpleVideo> simpleVideoList = new ArrayList<SimpleVideo>();
+		final long NUMBER_OF_SEARCHED_VIDEOS = 1;
 		
 		context.checking(new Expectations() {{
-			oneOf(videoServiceMock).findVideos(with(same(keywords)));
+			oneOf(videoServiceMock).findVideos(with(same(keywords)), with(same(NUMBER_OF_SEARCHED_VIDEOS)));
 			will(returnValue(simpleVideoList));
 		}});
 		
-		videoFacadeImpl.findVideos(keywords);
+		videoFacadeImpl.findVideos(keywords, NUMBER_OF_SEARCHED_VIDEOS);
 		
 	}
 	
@@ -51,16 +52,18 @@ public class VideoFacadeImplTest {
 		
 		final List<String> keywords = new ArrayList<String>();
 		final List<SimpleVideo> simpleVideoList = new ArrayList<SimpleVideo>();
+		final long NUMBER_OF_SEARCHED_VIDEOS = 1;
 		SimpleVideo simpleVideo1 = new SimpleVideo();
 		simpleVideo1.setTitle("Titulo");
+		simpleVideo1.setDescription("Descrição do Video");
 		simpleVideoList.add(simpleVideo1);
 		
 		context.checking(new Expectations() {{
-			oneOf(videoServiceMock).findVideos(with(same(keywords)));
+			oneOf(videoServiceMock).findVideos(with(same(keywords)), with(same(NUMBER_OF_SEARCHED_VIDEOS)));
 			will(returnValue(simpleVideoList));
 		}});
 		
-		List<SimpleVideoDTO> simpleVideoDTOList = videoFacadeImpl.findVideos(keywords);
+		List<SimpleVideoDTO> simpleVideoDTOList = videoFacadeImpl.findVideos(keywords, NUMBER_OF_SEARCHED_VIDEOS);
 
 		assertNotNull("Não deveria ter retornado nulo.", simpleVideoDTOList);
 		
@@ -69,6 +72,9 @@ public class VideoFacadeImplTest {
 		
 		assertEquals("Deveria ter retornado o titulo esperado.", 
 				simpleVideo1.getTitle(),  simpleVideoDTOList.get(0).getTitle());
+		
+		assertEquals("Deveria ter a descrição esperada.", 
+				simpleVideo1.getDescription(),  simpleVideoDTOList.get(0).getDescription());
 
 	}
 	

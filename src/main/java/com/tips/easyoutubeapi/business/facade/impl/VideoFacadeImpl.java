@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.google.api.client.util.DateTime;
 import com.tips.easyoutubeapi.business.facade.VideoFacade;
@@ -21,7 +20,6 @@ import com.tips.easyoutubeapi.entity.Statistics;
 import com.tips.easyoutubeapi.entity.Subtitle;
 
 @Service
-@Transactional
 public class VideoFacadeImpl implements VideoFacade {
 
 	private VideoService videoService;
@@ -31,9 +29,9 @@ public class VideoFacadeImpl implements VideoFacade {
 		this.videoService = videoService;
 	}
 	
-	public List<SimpleVideoDTO> findVideos(List<String> keywords) {
+	public List<SimpleVideoDTO> findVideos(List<String> keywords, long quantity) {
 		
-		List<SimpleVideo> simpleVideoList = videoService.findVideos(keywords);
+		List<SimpleVideo> simpleVideoList = videoService.findVideos(keywords, quantity);
 		
 		List<SimpleVideoDTO> simpleVideoDTOList = new ArrayList<SimpleVideoDTO>();
 		
@@ -96,7 +94,10 @@ public class VideoFacadeImpl implements VideoFacade {
 	}
 
 	private StatisticsDTO StatisticsToStatisticsDTO(Statistics statistics) {
-		StatisticsDTO statisticsDTO = new StatisticsDTO();
+		StatisticsDTO statisticsDTO;
+		if(statistics == null)
+			return null;
+		statisticsDTO = new StatisticsDTO();
 		statisticsDTO.setCommentCount(statistics.getCommentCount());
 		statisticsDTO.setDislikeCount(statistics.getDislikeCount());
 		statisticsDTO.setFavoriteCount(statistics.getFavoriteCount());

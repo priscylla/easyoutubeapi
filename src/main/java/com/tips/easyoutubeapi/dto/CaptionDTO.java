@@ -2,8 +2,6 @@ package com.tips.easyoutubeapi.dto;
 
 import java.util.List;
 
-import com.tips.easyoutubeapi.entity.Subtitle;
-
 public class CaptionDTO {
 	
 	private List<SubtitleDTO> subtitles;
