@@ -125,6 +125,11 @@ public class VideoRepositoryImplTest {
 		
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute statistics not should be null.", simpleVideo.getStatistics());
+			assertNotNull("The attribute statistics comment count not should be null.", simpleVideo.getStatistics().getCommentCount());
+			assertNotNull("The attribute statistics dislike count not should be null.", simpleVideo.getStatistics().getDislikeCount());
+			assertNotNull("The attribute statistics favorite count not should be null.", simpleVideo.getStatistics().getFavoriteCount());
+			assertNotNull("The attribute statistics like count not should be null.", simpleVideo.getStatistics().getLikeCount());
+			assertNotNull("The attribute statistics view count not should be null.", simpleVideo.getStatistics().getViewCount());
 		}
 		
 	}

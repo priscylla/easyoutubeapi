@@ -10,70 +10,57 @@ public class Statistics {
 	private BigInteger favoriteCount;
 	private BigInteger commentCount;
 	
+	public Statistics() {
+	}
 	
-	/**
-	 * 
-	 */
-	public Statistics() {}
-	/**
-	 * @return the viewCount
-	 */
-	public BigInteger getViewCount() {
-		return viewCount;
-	}
-	/**
-	 * @param viewCount the viewCount to set
-	 */
-	public void setViewCount(BigInteger viewCount) {
+	public Statistics(BigInteger viewCount, BigInteger likeCount,
+			BigInteger dislikeCount, BigInteger favoriteCount,
+			BigInteger commentCount) {
 		this.viewCount = viewCount;
-	}
-	/**
-	 * @return the likeCount
-	 */
-	public BigInteger getLikeCount() {
-		return likeCount;
-	}
-	/**
-	 * @param likeCount the likeCount to set
-	 */
-	public void setLikeCount(BigInteger likeCount) {
 		this.likeCount = likeCount;
-	}
-	/**
-	 * @return the dislikeCount
-	 */
-	public BigInteger getDislikeCount() {
-		return dislikeCount;
-	}
-	/**
-	 * @param dislikeCount the dislikeCount to set
-	 */
-	public void setDislikeCount(BigInteger dislikeCount) {
 		this.dislikeCount = dislikeCount;
-	}
-	/**
-	 * @return the favoriteCount
-	 */
-	public BigInteger getFavoriteCount() {
-		return favoriteCount;
-	}
-	/**
-	 * @param favoriteCount the favoriteCount to set
-	 */
-	public void setFavoriteCount(BigInteger favoriteCount) {
 		this.favoriteCount = favoriteCount;
-	}
-	/**
-	 * @return the commentCount
-	 */
-	public BigInteger getCommentCount() {
-		return commentCount;
-	}
-	/**
-	 * @param commentCount the commentCount to set
-	 */
-	public void setCommentCount(BigInteger commentCount) {
 		this.commentCount = commentCount;
 	}
 
+	public BigInteger getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(BigInteger viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public BigInteger getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(BigInteger likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	public BigInteger getDislikeCount() {
+		return dislikeCount;
+	}
+
+	public void setDislikeCount(BigInteger dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
+
+	public BigInteger getFavoriteCount() {
+		return favoriteCount;
+	}
+
+	public void setFavoriteCount(BigInteger favoriteCount) {
+		this.favoriteCount = favoriteCount;
+	}
+
+	public BigInteger getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(BigInteger commentCount) {
+		this.commentCount = commentCount;
+	}
+	
 }

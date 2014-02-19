@@ -9,6 +9,8 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoListResponse;
 import com.tips.easyoutubeapi.Auth;
 
 public abstract class AbstractYoutube {
@@ -17,6 +19,7 @@ public abstract class AbstractYoutube {
 	private static final String APP_NAME = "EasYouTubeApi";
 	private static final String API_KEY = "AIzaSyCoaNth4gZXiEz-bzVJaUkwnZguwwiisLg";
 	private static final String TYPE_YOUTUBE_VIDEO = "youtube#video";
+	private static final Long MAX_RESULTS_ONE = 1l;
 	
 	protected static YouTube youtube;
 	protected YouTube.Search.List search;
@@ -35,6 +38,12 @@ public abstract class AbstractYoutube {
 			e.printStackTrace();
 		}
 	}
+	
+	private String getApiKey() {
+		return API_KEY;
+	}
+
+	
 	
 	protected boolean isResourceOfTypeYouTubeVideo(ResourceId resourceId) {
 		return resourceId.getKind().equals(TYPE_YOUTUBE_VIDEO);
@@ -56,6 +65,31 @@ public abstract class AbstractYoutube {
 		
         List<SearchResult> searchResultList = searchResponse.getItems();
 		return searchResultList;
+	}
+	
+	protected Video findYouTubeVideo(String videoId) {
+		
+		try {
+			com.google.api.services.youtube.YouTube.Videos.List  youTubeVideoList = 
+					youtube.videos().list("snippet,statistics,contentDetails")
+					.setId(videoId)
+					.setKey(getApiKey())
+					.setMaxResults(MAX_RESULTS_ONE);
+			
+			VideoListResponse videoListResponse = youTubeVideoList.execute();
+			
+			if (!videoListResponse.isEmpty()) {
+				List<Video> videoList = videoListResponse.getItems();
+				return videoList.get(0);
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+        return new Video();
+		
 	}
 	
 }
