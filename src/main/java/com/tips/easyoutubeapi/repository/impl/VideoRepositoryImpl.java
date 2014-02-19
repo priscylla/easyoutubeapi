@@ -9,7 +9,9 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.SearchResultSnippet;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.google.api.services.youtube.model.Video;
 import com.tips.easyoutubeapi.entity.SimpleVideo;
+import com.tips.easyoutubeapi.entity.Statistics;
 import com.tips.easyoutubeapi.repository.VideoRepository;
 
 @Service
@@ -41,6 +43,18 @@ public class VideoRepositoryImpl extends AbstractYoutube implements VideoReposit
         		simpleVideo.setChannelId(snippet.getChannelId());
         		simpleVideo.setChannelTitle(snippet.getChannelTitle());
         		simpleVideo.setThumbnail(thumbnail.getUrl());
+        		
+        		Video ytVideo = findYouTubeVideo(resourceId.getVideoId());
+        		
+        		simpleVideo.setDuration(ytVideo.getContentDetails().getDuration());
+        		
+        		Statistics statistics = new Statistics(ytVideo.getStatistics().getViewCount(), 
+        				ytVideo.getStatistics().getLikeCount(), 
+        				ytVideo.getStatistics().getDislikeCount(), 
+        				ytVideo.getStatistics().getFavoriteCount(), 
+        				ytVideo.getStatistics().getCommentCount());
+				simpleVideo.setStatistics(statistics);
+				
 				simpleVideoListToReturn.add(simpleVideo);
         	}
 		}
