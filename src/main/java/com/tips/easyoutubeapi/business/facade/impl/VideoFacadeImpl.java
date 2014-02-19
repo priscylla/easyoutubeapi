@@ -55,6 +55,7 @@ public class VideoFacadeImpl implements VideoFacade {
 	private SimpleVideoDTO simpleVideoToSimpleVideoDTO(SimpleVideo simpleVideo){
 		SimpleVideoDTO simpleVideoDTO = new SimpleVideoDTO();
 		
+		simpleVideoDTO.setId(simpleVideo.getId());
 		simpleVideoDTO.setTitle(simpleVideo.getTitle());
 		simpleVideoDTO.setDescription(simpleVideo.getDescription());
 		simpleVideoDTO.setChannelId(simpleVideo.getChannelId());
