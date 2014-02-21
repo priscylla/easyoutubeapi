@@ -16,7 +16,7 @@ import com.tips.easyoutubeapi.dto.StatisticsDTO;
 import com.tips.easyoutubeapi.dto.SubtitleDTO;
 import com.tips.easyoutubeapi.entity.Caption;
 import com.tips.easyoutubeapi.entity.SimpleVideo;
-import com.tips.easyoutubeapi.entity.Statistics;
+import com.tips.easyoutubeapi.entity.SimpleStatistics;
 import com.tips.easyoutubeapi.entity.Subtitle;
 
 @Service
@@ -30,29 +30,28 @@ public class VideoFacadeImpl implements VideoFacade {
 	}
 	
 	public List<SimpleVideoDTO> findVideos(List<String> keywords, long quantity) {
-		
 		List<SimpleVideo> simpleVideoList = videoService.findVideos(keywords, quantity);
 		
-		List<SimpleVideoDTO> simpleVideoDTOList = new ArrayList<SimpleVideoDTO>();
-		
-		for (SimpleVideo simpleVideo : simpleVideoList) {
-			simpleVideoDTOList.add(simpleVideoToSimpleVideoDTO(simpleVideo));
-		}
+		List<SimpleVideoDTO> simpleVideoDTOList = convertSimpleVideoListToSimpleVideoDTOList(simpleVideoList);
 		
 		return simpleVideoDTOList;
 	}
 
-	public SimpleVideoDTO findVideo(String videoId) {
-		// TODO Auto-generated method stub
-		return null;
+	private List<SimpleVideoDTO> convertSimpleVideoListToSimpleVideoDTOList(List<SimpleVideo> simpleVideoList) {
+		List<SimpleVideoDTO> simpleVideoDTOList = new ArrayList<SimpleVideoDTO>();
+		for (SimpleVideo simpleVideo : simpleVideoList) {
+			simpleVideoDTOList.add(convertSimpleVideoToSimpleVideoDTO(simpleVideo));
+		}
+		return simpleVideoDTOList;
 	}
 
-	public String getCaption(String videoId) {
-		// TODO Auto-generated method stub
-		return null;
+	public SimpleVideoDTO findVideo(String videoId) {
+		SimpleVideo simpleVideoReturned = videoService.findVideo(videoId);
+		SimpleVideoDTO simpleVideoDTOConverted = convertSimpleVideoToSimpleVideoDTO(simpleVideoReturned);
+		return simpleVideoDTOConverted;
 	}
 	
-	private SimpleVideoDTO simpleVideoToSimpleVideoDTO(SimpleVideo simpleVideo){
+	private SimpleVideoDTO convertSimpleVideoToSimpleVideoDTO(SimpleVideo simpleVideo){
 		SimpleVideoDTO simpleVideoDTO = new SimpleVideoDTO();
 		
 		simpleVideoDTO.setId(simpleVideo.getId());
@@ -63,7 +62,7 @@ public class VideoFacadeImpl implements VideoFacade {
 		simpleVideoDTO.setDuration(simpleVideo.getDuration());
 		simpleVideoDTO.setCaption(captionToCaptionDTO(simpleVideo.getCaption()));
 		simpleVideoDTO.setPublishedAt(DateTimeToDate(simpleVideo.getPublishedAt()));
-		simpleVideoDTO.setStatistics(StatisticsToStatisticsDTO(simpleVideo.getStatistics()));
+		simpleVideoDTO.setStatistics(StatisticsToStatisticsDTO(simpleVideo.getSimpleStatistics()));
 		simpleVideoDTO.setThumbnail(simpleVideo.getThumbnail());
 		
 		return simpleVideoDTO;
@@ -94,7 +93,7 @@ public class VideoFacadeImpl implements VideoFacade {
 		return subtitleDTO;
 	}
 
-	private StatisticsDTO StatisticsToStatisticsDTO(Statistics statistics) {
+	private StatisticsDTO StatisticsToStatisticsDTO(SimpleStatistics statistics) {
 		StatisticsDTO statisticsDTO;
 		if(statistics == null)
 			return null;

@@ -19,11 +19,15 @@ import com.tips.easyoutubeapi.repository.VideoRepository;
 @ContextConfiguration("classpath:testContext.xml")
 public class VideoRepositoryImplTest {
 
+	private static final String MSG_THE_VIDEO_RETURNED_NOT_SHOULD_BE_NULL = "The video returned not should be null";
+
 	@Autowired
 	private VideoRepository videoRepositoryImpl;
 	
 	private List<String> keywords;
 	Long quantity;
+	
+	String videoId;
 	
 	@Before
 	public void initialize() throws Exception {
@@ -33,11 +37,8 @@ public class VideoRepositoryImplTest {
 		keywords.add("matemática");
 		keywords.add("multiplicação");
 		quantity = 10l;
-	}
-	
-	private List<SimpleVideo> findVideos() {
-		List<SimpleVideo> simpleVideoList = videoRepositoryImpl.findVideos(keywords, quantity);
-		return simpleVideoList;
+		
+		videoId = "QbwoVGijUBY";
 	}
 	
 	@Test
@@ -50,108 +51,134 @@ public class VideoRepositoryImplTest {
 	}
 	
 	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeIdNotNullOfObjects() throws Exception {
+	public void whenFindVideosShouldReturnSimpleVideoListWithNotNullAttributes() throws Exception {
 		List<SimpleVideo> simpleVideoList = findVideos();
 		
-		for (SimpleVideo simpleVideo : simpleVideoList) {
-			assertNotNull("The attribute id not should be null.", simpleVideo.getId());
-		}
+		assertNotNullSimpleVideoListId(simpleVideoList);
+		assertNotNullSimpleVideoListChannelId(simpleVideoList);
+		assertNotNullSimpleVideoListChannelTitle(simpleVideoList);
+		assertNotNullSimpleVideoListDescription(simpleVideoList);
+		assertNotNullSimpleVideoListDuration(simpleVideoList);
+		assertNotNullSimpleVideoListPublishedAt(simpleVideoList);
+		assertNotNullSimpleVideoListSimpleStatistics(simpleVideoList);
+		assertNotNullSimpleVideoListTitle(simpleVideoList);
+		assertNotNullSimpleVideoListThumbnail(simpleVideoList);
+	}
+	
+	@Test
+	public void whenFindVideosShouldReturnSimpleVideoListWithNotNullAttributeCaption() throws Exception {
+		List<SimpleVideo> simpleVideoList = findVideos();
 		
+		assertNotNullSimpleVideoListCaption(simpleVideoList);
+	}
+	
+	@Test
+	public void whenFindVideoShouldToReturnNotNullSimpleVideo() throws Exception {
+		SimpleVideo videoReturned = findVideo(videoId);
+		assertNotNull(MSG_THE_VIDEO_RETURNED_NOT_SHOULD_BE_NULL, videoReturned);
 	}
 
 	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeCaptionNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+	public void whenFindVideoShouldToReturnSimpleVideoWithNotNullAttributes() throws Exception {
+		SimpleVideo videoReturned = findVideo(videoId);
+		assertNotNull("The attribute id not should be null.", videoReturned.getId());
+		assertNotNull("The attribute duration not should be null.", videoReturned.getDuration());
+		assertNotNull("The attribute channel id not should be null.", videoReturned.getChannelId());
+		assertNotNull("The attribute channel title not should be null.", videoReturned.getChannelTitle());
+		assertNotNull("The attribute description not should be null.", videoReturned.getDescription());
+		assertNotNull("The attribute published at not should be null.", videoReturned.getPublishedAt());
+		assertNotNull("The attribute statistics not should be null.", videoReturned.getSimpleStatistics());
+		assertNotNull("The attribute statistics comment count not should be null.", videoReturned.getSimpleStatistics().getCommentCount());
+		assertNotNull("The attribute statistics dislike count not should be null.", videoReturned.getSimpleStatistics().getDislikeCount());
+		assertNotNull("The attribute statistics favorite count not should be null.", videoReturned.getSimpleStatistics().getFavoriteCount());
+		assertNotNull("The attribute statistics like count not should be null.", videoReturned.getSimpleStatistics().getLikeCount());
+		assertNotNull("The attribute statistics view count not should be null.", videoReturned.getSimpleStatistics().getViewCount());
+		assertNotNull("The attribute thumbnail not should be null.", videoReturned.getThumbnail());
+		assertNotNull("The attribute title not should be null.", videoReturned.getTitle());
+	}
+	
+	private List<SimpleVideo> findVideos() {
+		List<SimpleVideo> simpleVideoList = videoRepositoryImpl.findVideos(keywords, quantity);
+		return simpleVideoList;
+	}
+	
+	private SimpleVideo findVideo(String videoId) {
+		return videoRepositoryImpl.findVideo(videoId);
+	}
+
+	private void assertNotNullSimpleVideoListId(
+			List<SimpleVideo> simpleVideoList) {
+		for (SimpleVideo simpleVideo : simpleVideoList) {
+			assertNotNull("The attribute id not should be null.", simpleVideo.getId());
+		}
+	}
+
+	private void assertNotNullSimpleVideoListCaption(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute caption not should be null.", simpleVideo.getCaption());
 		}
-		
 	}
 	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeChannelIdNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+	private void assertNotNullSimpleVideoListChannelId(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute channel id not should be null.", simpleVideo.getChannelId());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeChannelTitleNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListChannelTitle(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute channel title not should be null.", simpleVideo.getChannelTitle());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeDescriptionNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListDescription(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute description not should be null.", simpleVideo.getDescription());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeDurationNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListDuration(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute duration not should be null.", simpleVideo.getDuration());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributePublishedAtNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListPublishedAt(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute published at not should be null.", simpleVideo.getPublishedAt());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeStatisticsNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListSimpleStatistics(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
-			assertNotNull("The attribute statistics not should be null.", simpleVideo.getStatistics());
-			assertNotNull("The attribute statistics comment count not should be null.", simpleVideo.getStatistics().getCommentCount());
-			assertNotNull("The attribute statistics dislike count not should be null.", simpleVideo.getStatistics().getDislikeCount());
-			assertNotNull("The attribute statistics favorite count not should be null.", simpleVideo.getStatistics().getFavoriteCount());
-			assertNotNull("The attribute statistics like count not should be null.", simpleVideo.getStatistics().getLikeCount());
-			assertNotNull("The attribute statistics view count not should be null.", simpleVideo.getStatistics().getViewCount());
+			assertNotNull("The attribute statistics not should be null.", simpleVideo.getSimpleStatistics());
+			assertNotNull("The attribute statistics comment count not should be null.", simpleVideo.getSimpleStatistics().getCommentCount());
+			assertNotNull("The attribute statistics dislike count not should be null.", simpleVideo.getSimpleStatistics().getDislikeCount());
+			assertNotNull("The attribute statistics favorite count not should be null.", simpleVideo.getSimpleStatistics().getFavoriteCount());
+			assertNotNull("The attribute statistics like count not should be null.", simpleVideo.getSimpleStatistics().getLikeCount());
+			assertNotNull("The attribute statistics view count not should be null.", simpleVideo.getSimpleStatistics().getViewCount());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeThumbnailNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListThumbnail(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute thumbnail not should be null.", simpleVideo.getThumbnail());
 		}
-		
 	}
-	
-	@Test
-	public void whenFindVideosShouldReturnSimpleVideoListWithAttributeTitleNotNullOfObjects() throws Exception {
-		List<SimpleVideo> simpleVideoList = findVideos();
-		
+
+	private void assertNotNullSimpleVideoListTitle(
+			List<SimpleVideo> simpleVideoList) {
 		for (SimpleVideo simpleVideo : simpleVideoList) {
 			assertNotNull("The attribute title not should be null.", simpleVideo.getTitle());
 		}
-		
 	}
 	
 }

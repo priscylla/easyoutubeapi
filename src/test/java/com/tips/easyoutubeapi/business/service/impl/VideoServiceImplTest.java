@@ -1,7 +1,6 @@
 package com.tips.easyoutubeapi.business.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +24,19 @@ public class VideoServiceImplTest {
 	VideoService videoServiceImpl;
 	VideoRepository videoRepositoryMock;
 	
+	String videoId;
+	SimpleVideo simpleVideoExpected;
+	
 	@Before
 	public void initContext() {
 		videoRepositoryMock = context.mock(VideoRepository.class);
 		videoServiceImpl = new VideoServiceImpl(videoRepositoryMock);
+		
+		videoId = "vviiddeeooiidd";
+		simpleVideoExpected = new SimpleVideo();
 	}
 
+	//TODO: Refatorar testes. Utilizar with(same()).
 	@Test
 	public void whenFindVideosShouldToDelegateToVideoRepositoryFindVideos() throws Exception {
 		
@@ -47,6 +53,7 @@ public class VideoServiceImplTest {
 		
 	}
 	
+	//TODO: Refatorar testes.
 	@Test
 	public void whenFindVideosShouldReturnAQuantityExpectedSimpleVideos() throws Exception {
 		
@@ -72,6 +79,30 @@ public class VideoServiceImplTest {
 		
 
 
+	}
+	
+	@Test
+	public void whenFindVideoShouldToDelegateToVideoRepositoryFindVideo() throws Exception {
+		context.checking(new Expectations() {{
+			oneOf(videoRepositoryMock).findVideo(with(same(videoId)));
+			will(returnValue(simpleVideoExpected));
+		}});
+		
+		videoServiceImplFindVideo(videoId);
+	}
+	
+	public void whenFindVideoShouldReturnAnExpectedSimpleVideo() throws Exception {		
+		context.checking(new Expectations() {{
+			ignoring(videoRepositoryMock).findVideo(with(same(videoId)));
+			will(returnValue(simpleVideoExpected));
+		}});
+		
+		SimpleVideo simpleVideoReturned = videoServiceImplFindVideo(videoId);
+		assertEquals("The simple video returned don't equals simple video expected.", simpleVideoExpected, simpleVideoReturned);
+	}
+	
+	private SimpleVideo videoServiceImplFindVideo(String videoId) {
+		return videoServiceImpl.findVideo(videoId);
 	}
 
 }

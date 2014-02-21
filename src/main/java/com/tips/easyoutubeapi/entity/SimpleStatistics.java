@@ -2,7 +2,7 @@ package com.tips.easyoutubeapi.entity;
 
 import java.math.BigInteger;
 
-public class Statistics {
+public class SimpleStatistics {
 	
 	private BigInteger viewCount;
 	private BigInteger likeCount;
@@ -10,10 +10,10 @@ public class Statistics {
 	private BigInteger favoriteCount;
 	private BigInteger commentCount;
 	
-	public Statistics() {
+	public SimpleStatistics() {
 	}
 	
-	public Statistics(BigInteger viewCount, BigInteger likeCount,
+	public SimpleStatistics(BigInteger viewCount, BigInteger likeCount,
 			BigInteger dislikeCount, BigInteger favoriteCount,
 			BigInteger commentCount) {
 		this.viewCount = viewCount;

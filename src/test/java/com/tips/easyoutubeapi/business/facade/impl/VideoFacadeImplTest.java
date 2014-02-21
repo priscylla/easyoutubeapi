@@ -78,4 +78,17 @@ public class VideoFacadeImplTest {
 
 	}
 	
+	@Test
+	public void whenFindVideoShouldToDelegateToVideoServiceFindVideo() throws Exception {
+		final String videoId = "wszv-asdsa";
+		final SimpleVideo simpleVideo = new SimpleVideo();
+		
+		context.checking(new Expectations() {{
+			oneOf(videoServiceMock).findVideo(with(same(videoId)));
+			will(returnValue(simpleVideo));
+		}});
+		
+		videoFacadeImpl.findVideo(videoId);		
+	}
+	
 }

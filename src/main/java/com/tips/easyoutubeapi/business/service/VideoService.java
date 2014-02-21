@@ -8,4 +8,6 @@ public interface VideoService {
 
 	List<SimpleVideo> findVideos(List<String> keywords, long quantity);
 
+	SimpleVideo findVideo(String videoId);
+
 }

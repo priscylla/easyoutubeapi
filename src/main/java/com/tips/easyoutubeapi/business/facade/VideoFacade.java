@@ -10,6 +10,4 @@ public interface VideoFacade {
 	
 	public SimpleVideoDTO findVideo(String videoId);
 	
-	public String getCaption(String videoId);
-	
 }

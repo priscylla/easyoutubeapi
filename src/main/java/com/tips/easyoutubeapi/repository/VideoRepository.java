@@ -8,4 +8,6 @@ public interface VideoRepository {
 
 	List<SimpleVideo> findVideos(List<String> keywords, Long quantity);
 	
+	SimpleVideo findVideo(String videoId);
+	
 }
