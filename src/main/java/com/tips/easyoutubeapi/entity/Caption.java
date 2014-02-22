@@ -4,24 +4,24 @@ import java.util.List;
 
 public class Caption {
 	
-	private List<Subtitle> subtitle;
+	private List<Subtitle> subtitles;
 
 	/**
 	 * @return the subtitles
 	 */
 	public List<Subtitle> getSubtitles() {
-		return subtitle;
+		return subtitles;
 	}
 
 	/**
 	 * @param subtitle the subtitles to set
 	 */
 	public void setSubtitles(List<Subtitle> subtitle) {
-		this.subtitle = subtitle;
+		this.subtitles = subtitle;
 	}
 	
 	public boolean isEmpty(){
-		return this.subtitle.isEmpty();
+		return this.subtitles.isEmpty();
 	}
 
 }

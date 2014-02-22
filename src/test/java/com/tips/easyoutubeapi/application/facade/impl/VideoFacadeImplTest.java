@@ -1,8 +1,10 @@
-package com.tips.easyoutubeapi.business.facade.impl;
+package com.tips.easyoutubeapi.application.facade.impl;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.jmock.Expectations;
@@ -13,10 +15,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tips.easyoutubeapi.business.facade.VideoFacade;
-import com.tips.easyoutubeapi.business.service.VideoService;
+import com.google.api.client.util.DateTime;
+import com.tips.easyoutubeapi.application.facade.VideoFacade;
+import com.tips.easyoutubeapi.application.facade.impl.VideoFacadeImpl;
+import com.tips.easyoutubeapi.domain.service.VideoService;
 import com.tips.easyoutubeapi.dto.SimpleVideoDTO;
+import com.tips.easyoutubeapi.entity.Caption;
+import com.tips.easyoutubeapi.entity.Languages;
+import com.tips.easyoutubeapi.entity.SimpleStatistics;
 import com.tips.easyoutubeapi.entity.SimpleVideo;
+import com.tips.easyoutubeapi.entity.Subtitle;
+import com.tips.easyoutubeapi.entity.builder.CaptionBuilder;
+import com.tips.easyoutubeapi.entity.builder.SimpleStatisticsBuilder;
+import com.tips.easyoutubeapi.entity.builder.SimpleVideoBuilder;
 
 @RunWith(JMock.class)
 public class VideoFacadeImplTest {
@@ -33,10 +44,9 @@ public class VideoFacadeImplTest {
 	
 	@Test
 	public void whenFindVideosShouldToDelegateToVideoServiceFindVideos() throws Exception {
-		
 		final List<String> keywords = new ArrayList<String>();
 		final List<SimpleVideo> simpleVideoList = new ArrayList<SimpleVideo>();
-		final long NUMBER_OF_SEARCHED_VIDEOS = 1;
+		final Long NUMBER_OF_SEARCHED_VIDEOS = 1L;
 		
 		context.checking(new Expectations() {{
 			oneOf(videoServiceMock).findVideos(with(same(keywords)), with(same(NUMBER_OF_SEARCHED_VIDEOS)));
@@ -44,19 +54,15 @@ public class VideoFacadeImplTest {
 		}});
 		
 		videoFacadeImpl.findVideos(keywords, NUMBER_OF_SEARCHED_VIDEOS);
-		
 	}
 	
 	@Test
 	public void whenFindVideosShouldReturnAnExpectedSimpleVideoDTOList() throws Exception {
-		
 		final List<String> keywords = new ArrayList<String>();
 		final List<SimpleVideo> simpleVideoList = new ArrayList<SimpleVideo>();
 		final long NUMBER_OF_SEARCHED_VIDEOS = 1;
-		SimpleVideo simpleVideo1 = new SimpleVideo();
-		simpleVideo1.setTitle("Titulo");
-		simpleVideo1.setDescription("Descrição do Video");
-		simpleVideoList.add(simpleVideo1);
+
+		simpleVideoList.add(getASimpleVideo());
 		
 		context.checking(new Expectations() {{
 			oneOf(videoServiceMock).findVideos(with(same(keywords)), with(same(NUMBER_OF_SEARCHED_VIDEOS)));
@@ -70,13 +76,10 @@ public class VideoFacadeImplTest {
 		assertEquals("Deveria conter a mesma quantidade de elementos da lista de videos simples.", 
 				simpleVideoList.size(), simpleVideoDTOList.size());
 		
-		assertEquals("Deveria ter retornado o titulo esperado.", 
-				simpleVideo1.getTitle(),  simpleVideoDTOList.get(0).getTitle());
-		
-		assertEquals("Deveria ter a descrição esperada.", 
-				simpleVideo1.getDescription(),  simpleVideoDTOList.get(0).getDescription());
+		//TODO: Testar DTO equals Entity
 
 	}
+
 	
 	@Test
 	public void whenFindVideoShouldToDelegateToVideoServiceFindVideo() throws Exception {
@@ -91,4 +94,32 @@ public class VideoFacadeImplTest {
 		videoFacadeImpl.findVideo(videoId);		
 	}
 	
+	//TODO: Criar um Builder para Subtitle.
+	private SimpleVideo getASimpleVideo() {
+		List<Subtitle> subtitles = new ArrayList<Subtitle>();
+		Subtitle subtitle = new Subtitle();
+		subtitle.setLanguage(Languages.PT);
+		subtitle.setText("Text Subtitle");
+		subtitles.add(subtitle);
+		Caption caption = new CaptionBuilder().withSubtitleList(subtitles).build();
+		DateTime publishedAtDate = new DateTime(new Date());
+		
+		SimpleStatistics simpleStatistics = new  SimpleStatisticsBuilder()
+													.withCommentCount(new BigInteger("1"))
+													.withDislikeCount(new BigInteger("2"))
+													.withFavoriteCount(new BigInteger("3"))
+													.withLikeCount(new BigInteger("4"))
+													.withViewCount(new BigInteger("5"))
+													.build();
+		return new SimpleVideoBuilder()
+										.withCaption(caption)
+										.withChannelId("Channel Id")
+										.withChannelTitle("Tittle")
+										.withDescription("Description")
+										.withDuration("Duration")
+										.withId("Id")
+										.withPublishedAt(publishedAtDate)
+										.withStatistics(simpleStatistics)
+										.withThumbnail("Thumbnail").build();
+	}
 }

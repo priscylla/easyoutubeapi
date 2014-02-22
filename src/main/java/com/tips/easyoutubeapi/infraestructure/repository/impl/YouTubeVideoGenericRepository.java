@@ -1,4 +1,4 @@
-package com.tips.easyoutubeapi.repository.impl;
+package com.tips.easyoutubeapi.infraestructure.repository.impl;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoListResponse;
 
-public abstract class AbstractYoutube {
+public abstract class YouTubeVideoGenericRepository {
 
 	private static final String PARAMS_ID_AND_GENERAL_INFORMATIONS = "id,snippet";
 	private static final String APP_NAME = "EasYouTubeApi";
@@ -30,7 +30,7 @@ public abstract class AbstractYoutube {
 	private Properties properties;
 	
 	@Autowired
-	public AbstractYoutube(Properties properties) {
+	public YouTubeVideoGenericRepository(Properties properties) {
 		this.properties = properties;
 		
 		youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {

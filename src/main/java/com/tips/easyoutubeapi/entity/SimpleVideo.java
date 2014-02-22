@@ -12,7 +12,7 @@ public class SimpleVideo {
 	private String thumbnail;
 	private String channelTitle;
 	private String duration;
-	private SimpleStatistics statistics;
+	private SimpleStatistics simpleStatistics;
 	private Caption caption;
 
 	public SimpleVideo() {
@@ -20,7 +20,7 @@ public class SimpleVideo {
 
 	public SimpleVideo(String id, String title, String description,
 			DateTime publishedAt, String channelId, String thumbnail,
-			String channelTitle, String duration, SimpleStatistics statistics,
+			String channelTitle, String duration, SimpleStatistics simpleStatistics,
 			Caption caption) {
 		super();
 		this.id = id;
@@ -31,7 +31,7 @@ public class SimpleVideo {
 		this.thumbnail = thumbnail;
 		this.channelTitle = channelTitle;
 		this.duration = duration;
-		this.statistics = statistics;
+		this.simpleStatistics = simpleStatistics;
 		this.caption = caption;
 	}
 
@@ -100,11 +100,11 @@ public class SimpleVideo {
 	}
 
 	public SimpleStatistics getSimpleStatistics() {
-		return statistics;
+		return simpleStatistics;
 	}
 
-	public void setSimpleStatistics(SimpleStatistics statistics) {
-		this.statistics = statistics;
+	public void setSimpleStatistics(SimpleStatistics simpleStatistics) {
+		this.simpleStatistics = simpleStatistics;
 	}
 
 	public Caption getCaption() {

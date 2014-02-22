@@ -1,13 +1,13 @@
-package com.tips.easyoutubeapi.repository;
+package com.tips.easyoutubeapi.domain.service;
 
 import java.util.List;
 
 import com.tips.easyoutubeapi.entity.SimpleVideo;
 
-public interface VideoRepository {
+public interface VideoService {
 
 	List<SimpleVideo> findVideos(List<String> keywords, Long quantity);
-	
+
 	SimpleVideo findVideo(String videoId);
-	
+
 }

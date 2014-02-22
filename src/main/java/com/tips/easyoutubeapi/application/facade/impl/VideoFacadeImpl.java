@@ -1,4 +1,4 @@
-package com.tips.easyoutubeapi.business.facade.impl;
+package com.tips.easyoutubeapi.application.facade.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.util.DateTime;
-import com.tips.easyoutubeapi.business.facade.VideoFacade;
-import com.tips.easyoutubeapi.business.service.VideoService;
+import com.tips.easyoutubeapi.application.facade.VideoFacade;
+import com.tips.easyoutubeapi.domain.service.VideoService;
 import com.tips.easyoutubeapi.dto.CaptionDTO;
 import com.tips.easyoutubeapi.dto.SimpleVideoDTO;
 import com.tips.easyoutubeapi.dto.StatisticsDTO;
@@ -29,12 +29,16 @@ public class VideoFacadeImpl implements VideoFacade {
 		this.videoService = videoService;
 	}
 	
-	public List<SimpleVideoDTO> findVideos(List<String> keywords, long quantity) {
+	public List<SimpleVideoDTO> findVideos(List<String> keywords, Long quantity) {
 		List<SimpleVideo> simpleVideoList = videoService.findVideos(keywords, quantity);
-		
 		List<SimpleVideoDTO> simpleVideoDTOList = convertSimpleVideoListToSimpleVideoDTOList(simpleVideoList);
-		
 		return simpleVideoDTOList;
+	}
+	
+	public SimpleVideoDTO findVideo(String videoId) {
+		SimpleVideo simpleVideoReturned = videoService.findVideo(videoId);
+		SimpleVideoDTO simpleVideoDTOConverted = convertSimpleVideoToSimpleVideoDTO(simpleVideoReturned);
+		return simpleVideoDTOConverted;
 	}
 
 	private List<SimpleVideoDTO> convertSimpleVideoListToSimpleVideoDTOList(List<SimpleVideo> simpleVideoList) {
@@ -43,12 +47,6 @@ public class VideoFacadeImpl implements VideoFacade {
 			simpleVideoDTOList.add(convertSimpleVideoToSimpleVideoDTO(simpleVideo));
 		}
 		return simpleVideoDTOList;
-	}
-
-	public SimpleVideoDTO findVideo(String videoId) {
-		SimpleVideo simpleVideoReturned = videoService.findVideo(videoId);
-		SimpleVideoDTO simpleVideoDTOConverted = convertSimpleVideoToSimpleVideoDTO(simpleVideoReturned);
-		return simpleVideoDTOConverted;
 	}
 	
 	private SimpleVideoDTO convertSimpleVideoToSimpleVideoDTO(SimpleVideo simpleVideo){
